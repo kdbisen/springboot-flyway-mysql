@@ -15,18 +15,23 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<!-- Properties are prefixed with flyway. -->
-		<flyway.user>root</flyway.user>
-		<flyway.password>MyNewPass</flyway.password>
-		<!-- List are defined as comma-separated values -->
-		<flyway.schemas>classicmodels</flyway.schemas>
-		<!-- Individual placeholders are prefixed by flyway.placeholders. -->
-		<flyway.placeholders.keyABC>valueXYZ</flyway.placeholders.keyABC>
-		<flyway.placeholders.otherplaceholder>value123</flyway.placeholders.otherplaceholder>
+		<flyway.version>6.5.7</flyway.version>
+		<mysql.driver.version>8.0.21</mysql.driver.version>
+		<database.driver>com.mysql.cj.jdbc.Driver</database.driver>
+		<database.url>jdbc:mysql://localhost:3306/classicmodels?autoreconnect=true</database.url>
+		<database.username>root</database.username>
+		<database.password>MyNewPass</database.password>
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -35,7 +40,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -54,6 +62,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 			<exclusions>
@@ -68,24 +80,54 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
-				<version>6.5.7</version>
+				<version>${flyway.version}</version>
 				<configuration>
-					<user>${flyway.user}</user>
-					<password>${flyway.password}</password>
+					<driver>${database.driver}</driver>
+					<url>${database.url}</url>
+					<user>${database.username}</user>
+					<password>${database.password}</password>
 					<schemas>
-						<schema>${flyway.schemas}</schema>
+						<schema>classicmodels</schema>
 					</schemas>
+					<locations>
+						<location>db/migration</location>
+					</locations>
+					<encoding>ISO-8859-1</encoding>
+					<cleanOnValidationError>true</cleanOnValidationError>
 					<placeholders>
-						<keyABC>valueXYZ</keyABC>
-						<otherplaceholder>value123</otherplaceholder>
+						<email_type.primary>Primary</email_type.primary>
+						<email_type.work>Work</email_type.work>
+						<phone_type.home>Home</phone_type.home>
 					</placeholders>
 				</configuration>
+				<executions>
+					<execution>
+						<id>flyway database migration</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>clean</goal>
+							<goal>baseline</goal>
+							<goal>migrate</goal>
+							<goal>info</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
