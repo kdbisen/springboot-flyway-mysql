@@ -1,0 +1,1 @@
+INSERT INTO `book11`(`title`, `description`) VALUES('Hello Koding', 'Coding tutorials series');

@@ -27,6 +27,8 @@ public class FlywaySlaveInitializer {
                 .dataSource(dataSource)
                 .locations("classpath:db/migration/" + instance)
                 .callbacks(customCallback)
+                .baselineOnMigrate(true)
+                .table("flyway_history_schema")
                 .cleanDisabled(true)
                 .load();
     }

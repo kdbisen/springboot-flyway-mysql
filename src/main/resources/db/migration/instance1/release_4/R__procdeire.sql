@@ -1,6 +1,6 @@
 DELIMITER //
 
-CREATE procedure CalcIncome ( OUT ending_value INT )
+CREATE procedure CalcIncome11 ( OUT ending_value INT )
 
 BEGIN
 

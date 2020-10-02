@@ -1,4 +1,4 @@
-CREATE TABLE `book-store_new11` (
+CREATE TABLE `book11` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,

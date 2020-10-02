@@ -1,0 +1,1 @@
+DELETE FROM `book11` where `title` = 'Hello Koding 2';
